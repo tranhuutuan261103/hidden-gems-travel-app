@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const venueRoutes = require('./routes/venue.js');
+const categoryRoutes = require('./routes/category.js');
 const mongoString = process.env.DATABASE_URL;
 
 mongoose.connect(mongoString);
@@ -28,9 +29,16 @@ app.use((req, res, next) => {
     next();
 });
 
+// get url of the request
+app.use((req, res, next) => {
+    console.log(new Date(), `     ${req.method} ${req.url}`);
+    next();
+})
+
 app.use(express.json());
 
 app.use('/api', venueRoutes)
+app.use('/api', categoryRoutes)
 
 app.listen(3000, () => {
     console.log(`Server Started at http://localhost:${3000}`)
