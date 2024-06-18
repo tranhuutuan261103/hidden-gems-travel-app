@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const routes = require('./routes/routes.js');
+const venueRoutes = require('./routes/venue.js');
 const mongoString = process.env.DATABASE_URL;
 
 mongoose.connect(mongoString);
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use('/api', routes)
+app.use('/api', venueRoutes)
 
 app.listen(3000, () => {
     console.log(`Server Started at http://localhost:${3000}`)
