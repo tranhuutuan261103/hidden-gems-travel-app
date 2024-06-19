@@ -35,6 +35,7 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 
 app.use('/api', venueRoutes)
