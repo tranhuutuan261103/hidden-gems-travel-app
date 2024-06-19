@@ -13,6 +13,7 @@ Create an ``.env`` file at the root of your project with the following.
 
 ```dotenv
 DATABASE_URL = YOUR_MONGO_DB_URL
+JWT_SECRET = hidden-gems-travel
 ```
 
 Run project
