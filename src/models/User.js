@@ -13,7 +13,7 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    hashPassword: {
+    hashedPassword: {
         required: true,
         type: String
     },
