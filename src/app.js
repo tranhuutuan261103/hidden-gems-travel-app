@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const venueRoutes = require('./routes/venue.js');
+const postRoutes = require('./routes/post.js');
 const categoryRoutes = require('./routes/category.js');
 const userRoutes = require('./routes/user.js');
 const mongoString = process.env.DATABASE_URL;
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 
-app.use('/api', venueRoutes)
+app.use('/api', postRoutes)
 app.use('/api', categoryRoutes)
 app.use('/api', userRoutes)
 
