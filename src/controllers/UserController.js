@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 module.exports = {
     registerUser: async (req, res) => {
         try {
-            const { name, email, password, hashPassword, role } = req.body;
+            const { name, email, password, role } = req.body;
 
-            const user = await UserService.register({ name, email, password, hashPassword, role });
+            const user = await UserService.register({ name, email, password, role });
             if (user) {
                 const token = jwt.sign({ _id: user._id, email: user.email, role: user.role },
                     process.env.JWT_SECRET, { expiresIn: '1h' });
