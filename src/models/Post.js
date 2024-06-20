@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const dataSchema = new mongoose.Schema({
-    name: {
+    description: {
         required: true,
         type: String
     },
@@ -21,10 +22,15 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: Array
     },
-    star: {
+    votes: {
         required: true,
-        type: Number
+        type: Array
     },
+    category: {
+        required: true,
+        type: Schema.Types.ObjectId, 
+        ref: 'category' ,
+    }
 })
 
-module.exports = mongoose.model('venue', dataSchema)
+module.exports = mongoose.model('post', dataSchema)
