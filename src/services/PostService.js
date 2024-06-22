@@ -20,9 +20,27 @@ module.exports = {
         }
     },
 
-    getAll: async (limit = 10, page = 1) => {
+    getAll: async (longitude, latitude, categoryId, limit = 10) => {
         try {
-            const posts = await Post.find().populate('category').limit(limit * 1).skip((page - 1) * limit).exec();
+            const posts = categoryId ?
+                await Post.find().populate('category')
+                    .where('longitude').gte(parseFloat(longitude) - 1).lte(parseFloat(longitude) + 1)
+                    .where('latitude').gte(parseFloat(latitude) - 1).lte(parseFloat(latitude) + 1)
+                    .where('category').equals(categoryId)
+                    .limit(parseInt(limit))
+                : await Post.find().populate('category')
+                    .where('longitude').gte(parseFloat(longitude) - 1).lte(parseFloat(longitude) + 1)
+                    .where('latitude').gte(parseFloat(latitude) - 1).lte(parseFloat(latitude) + 1)
+                    .limit(parseInt(limit));
+            return posts;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
+    getAllFound: async (postIds) => {
+        try {
+            const posts = await Post.find().populate('category').where('_id').in(postIds);
             return posts;
         } catch (error) {
             throw new Error(error);
