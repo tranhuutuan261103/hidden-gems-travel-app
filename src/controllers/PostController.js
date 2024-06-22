@@ -1,4 +1,5 @@
 const PostService = require("../services/PostService.js");
+const UserService = require("../services/UserService.js");
 
 module.exports = {
     createPost: async (req, res) => {
@@ -13,8 +14,21 @@ module.exports = {
 
     getAllPost: async (req, res) => {
         try {
-            const { limit, page } = req.query;
-            const posts = await PostService.getAll(limit, page);
+            const { longitude, latitude, categoryId, limit } = req.query;
+            const userId = req.user._id;
+            const posts = await PostService.getAll(longitude, latitude, categoryId, limit);
+            await UserService.updatePostsFound(userId, posts.map(post => post._id));
+            res.json(posts);
+        } catch (error) {
+            res.json({ message: error.message });
+        }
+    },
+
+    getAllPostFound: async (req, res) => {
+        try {
+            const userId = req.user._id;
+            const user = await UserService.getUserInfo(userId);
+            const posts = await PostService.getAllFound(user.postsFound);
             res.json(posts);
         } catch (error) {
             res.json({ message: error.message });

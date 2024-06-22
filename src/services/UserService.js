@@ -43,5 +43,13 @@ module.exports = {
         } catch (error) {
             throw new Error(error);
         }
+    },
+
+    updatePostsFound: async (userId, postIds) => {
+        try {
+            await User.findByIdAndUpdate(userId, { postsFound: postIds });
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 };

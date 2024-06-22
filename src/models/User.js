@@ -20,7 +20,10 @@ const dataSchema = new mongoose.Schema({
     role: {
         required: true,
         type: String
-    }
+    },
+    postsFound: {
+        type: Array
+    },
 })
 
 module.exports = mongoose.model('user', dataSchema)
