@@ -1,11 +1,18 @@
 const PostService = require("../services/PostService.js");
 const UserService = require("../services/UserService.js");
+const StorageService = require("../services/StorageService.js");
 
 module.exports = {
     createPost: async (req, res) => {
         try {
-            const { description, longitude, latitude, address, images, star, categoryId } = req.body;
-            const post = await PostService.create({ description, longitude, latitude, address, images, star, categoryId });
+            const userId = req.user._id;
+            if (!req.files) {
+                res.json({ message: "Image is required" });
+                return;
+            }
+            const imageUrls = await StorageService.uploadMultiple(req.files, "Posts");
+            const { description, longitude, latitude, address, star, categoryId } = req.body;
+            const post = await PostService.create({ description, longitude, latitude, address, images: imageUrls, star, categoryId, createdBy: userId});
             res.json(post);
         } catch (error) {
             res.json({ message: error.message });
