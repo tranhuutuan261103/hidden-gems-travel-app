@@ -24,5 +24,25 @@ module.exports = {
         } catch (error) {
             throw new Error(error);
         }
+    },
+
+    /**
+     * Uploads multiple files to Firebase Storage
+     * @param {Array} files - An array of file objects
+     * @param {String} path - The path to store the files in Firebase Storage
+     * @returns {Array} - An array of download URLs
+     * @throws {Error} - Throws an error if the upload fails
+     */
+    uploadMultiple: async (files, path) => {
+        try {
+            const urls = [];
+            for (const file of files) {
+                const url = await module.exports.upload(file, path, file.originalname);
+                urls.push(url);
+            }
+            return urls;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 };

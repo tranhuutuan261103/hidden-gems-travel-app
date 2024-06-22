@@ -30,7 +30,12 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: Schema.Types.ObjectId, 
         ref: 'category' ,
-    }
+    },
+    createdBy: {
+        required: true,
+        type: Schema.Types.ObjectId, 
+        ref: 'user' ,
+    },
 })
 
 module.exports = mongoose.model('post', dataSchema)
