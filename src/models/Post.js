@@ -2,9 +2,17 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const dataSchema = new mongoose.Schema({
-    description: {
+    title: {
         required: true,
         type: String
+    },
+    content: {
+        required: true,
+        type: String
+    },
+    contentVectorize: {
+        required: true,
+        type: Array
     },
     longitude: {
         required: true,
@@ -19,6 +27,10 @@ const dataSchema = new mongoose.Schema({
         type: String
     },
     images: {
+        required: true,
+        type: Array
+    },
+    imageVectorize: {
         required: true,
         type: Array
     },
