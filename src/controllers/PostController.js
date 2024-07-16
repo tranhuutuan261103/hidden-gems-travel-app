@@ -11,8 +11,8 @@ module.exports = {
                 return;
             }
             const imageUrls = await StorageService.uploadMultiple(req.files, "Posts");
-            const { description, longitude, latitude, address, star, categoryId } = req.body;
-            const post = await PostService.create({ description, longitude, latitude, address, images: imageUrls, star, categoryId, createdBy: userId});
+            const { title, content, longitude, latitude, address, star, categoryId } = req.body;
+            const post = await PostService.create({ title, content, longitude, latitude, address, images: imageUrls, star, categoryId, createdBy: userId});
             res.json(post);
         } catch (error) {
             res.json({ message: error.message });
@@ -55,8 +55,8 @@ module.exports = {
     updatePost: async (req, res) => {
         try {
             const { id } = req.params;
-            const { description, longitude, latitude, address, images, star } = req.body;
-            const post = await PostService.update(id, { description, longitude, latitude, address, images, star });
+            const { title, content, longitude, latitude, address, images, star } = req.body;
+            const post = await PostService.update(id, { title, content, longitude, latitude, address, images, star });
             res.json(post);
         } catch (error) {
             res.json({ message: error.message });
