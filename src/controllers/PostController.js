@@ -22,9 +22,9 @@ module.exports = {
 
     getAllPost: async (req, res) => {
         try {
-            const { longitude, latitude, categoryId, limit } = req.query;
+            const { longitude, latitude, maxDistance, categoryId, limit } = req.query;
             const userId = req.user._id;
-            const posts = await PostService.getAll(longitude, latitude, categoryId, limit);
+            const posts = await PostService.getAll(longitude, latitude, maxDistance, categoryId, limit);
             await UserService.updatePostsFound(userId, posts.map(post => post._id));
 
             const userInfo = await UserService.getUserInfo(userId);
@@ -33,9 +33,9 @@ module.exports = {
             let result = [];
             for (let post of posts) {
                 if (postsUnlocked.includes(post._id)) {
-                    result.push({ ...post._doc, isUnlocked: true });
+                    result.push({ ...post, isUnlocked: true });
                 } else {
-                    result.push({ ...post._doc, isUnlocked: false });
+                    result.push({ ...post, isUnlocked: false });
                 }
 
                 if (postsArrived.includes(post._id)) {
