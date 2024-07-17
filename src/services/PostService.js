@@ -21,19 +21,45 @@ module.exports = {
         }
     },
 
-    getAll: async (longitude, latitude, categoryId, limit = 10) => {
+    // getAll: async (longitude, latitude, categoryId, limit = 10) => {
+    //     try {
+    //         let posts = categoryId ?
+    //             await Post.find().populate('category')
+    //                 .where('longitude').gte(parseFloat(longitude) - 1).lte(parseFloat(longitude) + 1)
+    //                 .where('latitude').gte(parseFloat(latitude) - 1).lte(parseFloat(latitude) + 1)
+    //                 .where('category').equals(categoryId)
+    //                 .limit(parseInt(limit))
+    //             : await Post.find().populate('category')
+    //                 .where('longitude').gte(parseFloat(longitude) - 1).lte(parseFloat(longitude) + 1)
+    //                 .where('latitude').gte(parseFloat(latitude) - 1).lte(parseFloat(latitude) + 1)
+    //                 .limit(parseInt(limit));
+    //         return posts;
+    //     } catch (error) {
+    //         throw new Error(error);
+    //     }
+    // },
+
+    getAll: async (longitude, latitude, maxDistance, categoryId, limit = 10) => {
         try {
             let posts = categoryId ?
                 await Post.find().populate('category')
-                    .where('longitude').gte(parseFloat(longitude) - 1).lte(parseFloat(longitude) + 1)
-                    .where('latitude').gte(parseFloat(latitude) - 1).lte(parseFloat(latitude) + 1)
                     .where('category').equals(categoryId)
-                    .limit(parseInt(limit))
-                : await Post.find().populate('category')
-                    .where('longitude').gte(parseFloat(longitude) - 1).lte(parseFloat(longitude) + 1)
-                    .where('latitude').gte(parseFloat(latitude) - 1).lte(parseFloat(latitude) + 1)
-                    .limit(parseInt(limit));
-            return posts;
+                : await Post.find().populate('category');
+
+            let result = [];
+            result = posts.map( post => {
+                let distance = Math.sqrt(Math.pow(post.longitude - longitude, 2) + Math.pow(post.latitude - latitude, 2));
+                return {
+                    ...post._doc,
+                    distance
+                };
+            });
+
+            result = result.filter(post => post.distance <= maxDistance);
+
+            result.sort((a, b) => a.distance - b.distance);
+
+            return result.slice(0, limit);
         } catch (error) {
             throw new Error(error);
         }
