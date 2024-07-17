@@ -8,6 +8,9 @@ const upload = multer({ dest: 'uploads/' })
 
 router.get('/posts', AuthMiddleware.Validate, Post.getAllPost);
 router.get('/posts/found', AuthMiddleware.Validate, Post.getAllPostFound);
+router.post('/posts/:id/unlocked', AuthMiddleware.Validate, Post.unlockPost);
+router.get('/posts/unlocked', AuthMiddleware.Validate, Post.getUnlockPost);
+router.post('/posts/:id/arrived', AuthMiddleware.Validate, Post.markArrived);
 router.post('/posts/create', AuthMiddleware.Validate, upload.array('images', 10), Post.createPost);
 router.get('/posts/:id', Post.getPost);
 router.put('/posts/:id/update', Post.updatePost);

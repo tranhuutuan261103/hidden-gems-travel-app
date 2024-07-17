@@ -72,5 +72,52 @@ module.exports = {
         } catch (error) {
             res.json({ message: error.message });
         }
+    },
+
+    getUnlockPost: async (req, res) => {
+        try {
+            const userId = req.user._id;
+            const posts = await UserService.getUnlockPost(userId);
+            res.json(posts);
+        } catch (error) {
+            res.json({ message: error.message });
+        }
+    },
+
+    unlockPost: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const userId = req.user._id;
+            const post = await PostService.getOne(id);
+            if (!post) {
+                res.json({ message: "Post not found" });
+                return;
+            }
+            await UserService.unlockPost(id, userId);
+            res.json({ message: "Unlocked post" });
+        } catch (error) {
+            res.json({ message: error.message });
+        }
+    },
+
+    markArrived: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const userId = req.user._id;
+            const post = await PostService.getOne(id);
+            if (!post) {
+                res.json({ message: "Post not found" });
+                return;
+            }
+            const userInfo = await UserService.getUserInfo(userId);
+            if (!userInfo.postsFound.includes(id)) {
+                res.json({ message: "You have not found this post" });
+                return;
+            }
+            await UserService.markArrived(id, userId);
+            res.json({ message: "Marked arrived" });
+        } catch (error) {
+            res.json({ message: error.message });
+        }
     }
 };
