@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const dataSchema = new mongoose.Schema({
     name: {
@@ -22,13 +23,22 @@ const dataSchema = new mongoose.Schema({
         type: String
     },
     postsFound: {
-        type: Array
+        type: Array({
+            type: Schema.Types.ObjectId,
+            ref: 'post'
+        })
     },
     postsUnlocked: {
-        type: Array
+        type: Array({
+            type: Schema.Types.ObjectId,
+            ref: 'post'
+        })
     },
     postsArrived: {
-        type: Array
+        type: Array({
+            type: Schema.Types.ObjectId,
+            ref: 'post'
+        })
     }
 })
 

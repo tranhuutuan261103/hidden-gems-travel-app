@@ -1,6 +1,6 @@
 const User = require('../models/User.js');
 const bcrypt = require("bcrypt");
-const { unlock } = require('../routes/post.js');
+const { Schema } = require('mongoose');
 
 module.exports = {
     register: async (data) => {
@@ -48,7 +48,7 @@ module.exports = {
 
     getUserInfoDetail: async (userId) => {
         try {
-            const user = await User.findById(userId);
+            const user = await User.findById(userId).populate('postsFound').populate('postsUnlocked').populate('postsArrived');
             return user;
         } catch (error) {
             throw new Error(error);
