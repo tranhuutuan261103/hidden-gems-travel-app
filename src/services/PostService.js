@@ -1,5 +1,6 @@
 const Post = require("../models/Post.js");
 const Category = require("../models/Category.js");
+const User = require("../models/User.js");
 
 module.exports = {
     create: async (data) => {
@@ -22,7 +23,7 @@ module.exports = {
 
     getAll: async (longitude, latitude, categoryId, limit = 10) => {
         try {
-            const posts = categoryId ?
+            let posts = categoryId ?
                 await Post.find().populate('category')
                     .where('longitude').gte(parseFloat(longitude) - 1).lte(parseFloat(longitude) + 1)
                     .where('latitude').gte(parseFloat(latitude) - 1).lte(parseFloat(latitude) + 1)

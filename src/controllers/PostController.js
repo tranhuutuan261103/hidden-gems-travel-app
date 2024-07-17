@@ -26,7 +26,25 @@ module.exports = {
             const userId = req.user._id;
             const posts = await PostService.getAll(longitude, latitude, categoryId, limit);
             await UserService.updatePostsFound(userId, posts.map(post => post._id));
-            res.json(posts);
+
+            const userInfo = await UserService.getUserInfo(userId);
+            const postsUnlocked = userInfo.postsUnlocked;
+            const postsArrived = userInfo.postsArrived;
+            let result = [];
+            for (let post of posts) {
+                if (postsUnlocked.includes(post._id)) {
+                    result.push({ ...post._doc, isUnlocked: true });
+                } else {
+                    result.push({ ...post._doc, isUnlocked: false });
+                }
+
+                if (postsArrived.includes(post._id)) {
+                    result[result.length - 1].isArrived = true;
+                } else {
+                    result[result.length - 1].isArrived = false;
+                }
+            }
+            res.json(result);
         } catch (error) {
             res.json({ message: error.message });
         }
@@ -47,7 +65,30 @@ module.exports = {
         try {
             const { id } = req.params;
             const post = await PostService.getOne(id);
-            res.json(post);
+            if (!post) {
+                res.json({ message: "Post not found" });
+                return;
+            }
+            const userId = req.user._id;
+
+            const userInfo = await UserService.getUserInfo(userId);
+            const postsUnlocked = userInfo.postsUnlocked;
+            const postsArrived = userInfo.postsArrived;
+            let result = post;
+
+            if (postsUnlocked.includes(post._id)) {
+                result = { ...post._doc, isUnlocked: true };
+            } else {
+                result = { ...post._doc, isUnlocked: false };
+            }
+
+            if (postsArrived.includes(post._id)) {
+                result.isArrived = true;
+            } else {
+                result.isArrived = false
+            }
+
+            res.json(result);
         } catch (error) {
             res.json({ message: error.message });
         }
