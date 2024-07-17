@@ -1,5 +1,6 @@
 const User = require('../models/User.js');
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const { unlock } = require('../routes/post.js');
 
 module.exports = {
     register: async (data) => {
@@ -45,11 +46,54 @@ module.exports = {
         }
     },
 
-    updatePostsFound: async (userId, postIds) => {
+    getUserInfoDetail: async (userId) => {
         try {
-            await User.findByIdAndUpdate(userId, { postsFound: postIds });
+            const user = await User.findById(userId);
+            return user;
         } catch (error) {
             throw new Error(error);
         }
-    }
+    },
+
+    updatePostsFound: async (userId, postIds) => {
+        try {
+            const userInfo = await User.findById(userId);
+            postIds = postIds.filter(postId => !userInfo.postsFound.includes(postId));
+            await User.findByIdAndUpdate(userId, { $push: { postsFound: { $each: postIds } } });
+            return;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
+    getUnlockPost: async (userId) => {
+        try {
+            const userInfo = await User.findById(userId);
+            return userInfo.postsUnlocked;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
+    unlockPost: async (postId, userId) => {
+        try {
+            const userInfo = await User.findById(userId);
+            if (!userInfo.postsUnlocked.includes(postId)) {
+                await User.findByIdAndUpdate(userId, { $push: { postsUnlocked: postId } });
+            }
+            return;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
+    markArrived: async (postId, userId) => {
+        const userInfo = await User.findById(userId);
+        if (!userInfo.postsArrived.includes(postId)) {
+            return await User.findByIdAndUpdate(userId, {
+                $push: { postsArrived: postId },
+            });
+        }
+        return userInfo;
+    },
 };

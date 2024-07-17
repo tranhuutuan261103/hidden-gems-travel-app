@@ -24,6 +24,12 @@ const dataSchema = new mongoose.Schema({
     postsFound: {
         type: Array
     },
+    postsUnlocked: {
+        type: Array
+    },
+    postsArrived: {
+        type: Array
+    }
 })
 
 module.exports = mongoose.model('user', dataSchema)

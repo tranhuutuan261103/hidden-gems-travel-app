@@ -1,4 +1,5 @@
 const UserService = require("../services/UserService.js");
+const PostService = require("../services/PostService.js");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -45,6 +46,16 @@ module.exports = {
         try {
             const { _id } = req.user;
             const user = await UserService.getUserInfo(_id);
+            res.json(user);
+        } catch (error) {
+            res.json({ message: error.message });
+        }
+    },
+
+    getUserInfoDetail: async (req, res) => {
+        try {
+            const { _id } = req.user;
+            const user = await UserService.getUserInfoDetail(_id);
             res.json(user);
         } catch (error) {
             res.json({ message: error.message });
