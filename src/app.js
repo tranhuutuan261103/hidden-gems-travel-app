@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const postRoutes = require('./routes/post.js');
+const commentRoutes = require('./routes/comment.js');
 const tourRoutes = require('./routes/tour.js');
 const categoryRoutes = require('./routes/category.js');
 const userRoutes = require('./routes/user.js');
@@ -41,6 +42,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 app.use('/api', postRoutes);
+app.use('/api', commentRoutes);
 app.use('/api', tourRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', userRoutes);

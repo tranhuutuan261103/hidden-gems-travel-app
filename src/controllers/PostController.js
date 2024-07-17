@@ -1,5 +1,6 @@
 const PostService = require("../services/PostService.js");
 const UserService = require("../services/UserService.js");
+const CommentService = require("../services/CommentService.js");
 const StorageService = require("../services/StorageService.js");
 
 module.exports = {
