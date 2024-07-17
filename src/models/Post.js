@@ -34,10 +34,6 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: Array
     },
-    votes: {
-        required: true,
-        type: Array
-    },
     category: {
         required: true,
         type: Schema.Types.ObjectId, 
@@ -47,6 +43,13 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: Schema.Types.ObjectId, 
         ref: 'user' ,
+    },
+    star_average: {
+        required: true,
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5
     },
 })
 
