@@ -87,6 +87,15 @@ module.exports = {
         }
     },
 
+    getPostArrived: async (userId) => {
+        try {
+            const userInfo = await User.findById(userId);
+            return userInfo.postsArrived;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
     markArrived: async (postId, userId) => {
         const userInfo = await User.findById(userId);
         if (!userInfo.postsArrived.includes(postId)) {
