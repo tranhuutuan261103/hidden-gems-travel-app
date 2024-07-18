@@ -14,7 +14,29 @@ module.exports = {
             const imageUrls = await StorageService.uploadMultiple(req.files, "Posts");
             const { title, content, longitude, latitude, address, star, categoryId } = req.body;
             const post = await PostService.create({ title, content, longitude, latitude, address, images: imageUrls, star, categoryId, createdBy: userId});
-            res.json(post);
+            await UserService.updatePostsFound(userId, [post._id]);
+            await UserService.unlockPost(post._id, userId);
+            await UserService.markArrived(post._id, userId);
+
+            let result = post;
+
+            const userInfo = await UserService.getUserInfo(userId);
+            const postsUnlocked = userInfo.postsUnlocked;
+            const postsArrived = userInfo.postsArrived;
+
+            if (postsUnlocked.includes(post._id)) {
+                result = { ...post._doc, isUnlocked: true };
+            } else {
+                result = { ...post._doc, isUnlocked: false };
+            }
+
+            if (postsArrived.includes(post._id)) {
+                result.isArrived = true;
+            } else {
+                result.isArrived = false
+            }
+
+            res.json(result);
         } catch (error) {
             res.json({ message: error.message });
         }
