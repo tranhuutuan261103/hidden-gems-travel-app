@@ -33,10 +33,13 @@ module.exports = {
      * @returns {Array} - An array of download URLs
      * @throws {Error} - Throws an error if the upload fails
      */
-    uploadMultiple: async (files, path) => {
+    uploadMultiple: async (files, path, filename = "") => {
         try {
             const urls = [];
             for (const file of files) {
+                if (filename !== "") {
+                    file.originalname = filename;
+                }
                 const url = await module.exports.upload(file, path, file.originalname);
                 urls.push(url);
             }

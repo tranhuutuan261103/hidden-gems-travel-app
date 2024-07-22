@@ -1,7 +1,7 @@
 const PostService = require("../services/PostService.js");
 const UserService = require("../services/UserService.js");
-const CommentService = require("../services/CommentService.js");
 const StorageService = require("../services/StorageService.js");
+const Dinov2Service = require("../services/Dinov2Service.js");
 
 module.exports = {
     createPost: async (req, res) => {
@@ -11,9 +11,10 @@ module.exports = {
                 res.json({ message: "Image is required" });
                 return;
             }
-            const imageUrls = await StorageService.uploadMultiple(req.files, "Posts");
             const { title, content, longitude, latitude, address, star, categoryId } = req.body;
+            const imageUrls = await StorageService.uploadMultiple(req.files, "Posts", title);
             const post = await PostService.create({ title, content, longitude, latitude, address, images: imageUrls, star, categoryId, createdBy: userId});
+            console.log(await Dinov2Service.upload(post._id, imageUrls));
             await UserService.updatePostsFound(userId, [post._id]);
             await UserService.unlockPost(post._id, userId);
             await UserService.markArrived(post._id, userId);
