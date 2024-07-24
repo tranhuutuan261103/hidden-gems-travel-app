@@ -68,5 +68,27 @@ module.exports = {
         } catch (error) {
             res.json({ message: error.message });
         }
+    },
+
+    increasePoints: async (req, res) => {
+        try {
+            const { _id } = req.user;
+            const { points } = req.body;
+            const user = await UserService.increasePoints(_id, points);
+            res.json(user);
+        } catch (error) {
+            res.json({ message: error.message });
+        }
+    },
+
+    decreasePoints: async (req, res) => {
+        try {
+            const { _id } = req.user;
+            const { points } = req.body;
+            const user = await UserService.decreasePoints(_id, points);
+            res.json(user);
+        } catch (error) {
+            res.json({ message: error.message });
+        }
     }
 };
