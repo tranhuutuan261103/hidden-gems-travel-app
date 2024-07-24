@@ -1,6 +1,7 @@
 const Post = require("../models/Post.js");
 const Category = require("../models/Category.js");
 const User = require("../models/User.js");
+const HaversineHelper = require("../utils/HaversineHelper.js");
 
 module.exports = {
     create: async (data) => {
@@ -48,7 +49,7 @@ module.exports = {
 
             let result = [];
             result = posts.map( post => {
-                let distance = Math.sqrt(Math.pow(post.longitude - longitude, 2) + Math.pow(post.latitude - latitude, 2));
+                let distance = HaversineHelper.coordinatesToDistance(post.latitude, post.longitude, latitude, longitude);
                 return {
                     ...post._doc,
                     distance
