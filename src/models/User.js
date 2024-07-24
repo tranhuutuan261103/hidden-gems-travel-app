@@ -18,6 +18,11 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    points: {
+        required: true,
+        type: Number,
+        default: 5000
+    },
     role: {
         required: true,
         type: String

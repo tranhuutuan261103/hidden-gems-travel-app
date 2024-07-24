@@ -105,4 +105,35 @@ module.exports = {
         }
         return userInfo;
     },
+
+    increasePoints: async (userId, points) => {
+        try {
+            const userInfo = await User.findById(userId);
+            if (userInfo.points === undefined) {
+                await User.findByIdAndUpdate(userId, { points: points });
+            } else {
+                await User.findByIdAndUpdate(userId, { points: userInfo.points + points });
+            }
+            return await User.findById(userId);
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
+
+    decreasePoints: async (userId, points) => {
+        try {
+            const userInfo = await User.findById(userId);
+            if (userInfo.points === undefined) {
+                await User.findByIdAndUpdate(userId, { points: 0 });
+            } else {
+                if (userInfo.points < points) {
+                    throw new Error("Not enough points");
+                } else {
+                    await User.findByIdAndUpdate(userId, { points: userInfo.points - points });
+                }
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 };

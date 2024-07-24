@@ -37,6 +37,8 @@ module.exports = {
                 result.isArrived = false
             }
 
+            await UserService.increasePoints(userId, process.env.POINTS_FOR_CREATING_A_GEM);
+
             res.json(result);
         } catch (error) {
             res.json({ message: error.message });
@@ -157,6 +159,7 @@ module.exports = {
                 res.json({ message: "Post not found" });
                 return;
             }
+            UserService.decreasePoints(userId, process.env.COST_TO_UNLOCK_A_GEM);
             await UserService.unlockPost(id, userId);
             res.json({ message: "Unlocked post" });
         } catch (error) {
