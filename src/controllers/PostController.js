@@ -159,8 +159,13 @@ module.exports = {
                 res.json({ message: "Post not found" });
                 return;
             }
-            UserService.decreasePoints(userId, process.env.COST_TO_UNLOCK_A_GEM);
-            await UserService.unlockPost(id, userId);
+            if (UserService.getPoints(userId) < process.env.COST_TO_UNLOCK_A_GEM) {
+                res.json({ message: "Not enough points" });
+                return;
+            }
+            if (await UserService.unlockPost(id, userId) === true) {
+                UserService.decreasePoints(userId, process.env.COST_TO_UNLOCK_A_GEM);
+            }
             res.json({ message: "Unlocked post" });
         } catch (error) {
             res.json({ message: error.message });

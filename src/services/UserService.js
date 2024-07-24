@@ -1,6 +1,6 @@
 const User = require('../models/User.js');
 const bcrypt = require("bcrypt");
-const { Schema } = require('mongoose');
+const { Schema, get } = require('mongoose');
 
 module.exports = {
     register: async (data) => {
@@ -80,8 +80,9 @@ module.exports = {
             const userInfo = await User.findById(userId);
             if (!userInfo.postsUnlocked.includes(postId)) {
                 await User.findByIdAndUpdate(userId, { $push: { postsUnlocked: postId } });
+                return true;
             }
-            return;
+            return false;
         } catch (error) {
             throw new Error(error);
         }
@@ -135,5 +136,14 @@ module.exports = {
         } catch (error) {
             throw new Error(error);
         }
-    }
+    },
+
+    getPoints: async (userId) => {
+        try {
+            const userInfo = await User.findById(userId);
+            return userInfo.points;
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
 };
