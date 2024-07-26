@@ -15,7 +15,7 @@ module.exports = {
             const { title, content, longitude, latitude, address, star, categoryId } = req.body;
             const imageUrls = await StorageService.uploadMultiple(req.files, "Posts", title);
             const post = await PostService.create({ title, content, longitude, latitude, address, images: imageUrls, star, categoryId, createdBy: userId});
-            console.log(await Dinov2Service.upload(post._id, imageUrls));
+            
             await UserService.updatePostsFound(userId, [post._id]);
             await UserService.unlockPost(post._id, userId);
             await UserService.markArrived(post._id, userId);
@@ -38,7 +38,9 @@ module.exports = {
                 result.isArrived = false
             }
 
-            await UserService.increasePoints(userId, process.env.POINTS_FOR_CREATING_A_GEM);
+            await UserService.increasePoints(userId, parseInt(process.env.POINTS_FOR_CREATING_A_GEM));
+
+            console.log(await Dinov2Service.upload(post._id, imageUrls));
 
             res.json(result);
         } catch (error) {
@@ -165,7 +167,7 @@ module.exports = {
                 return;
             }
             if (await UserService.unlockPost(id, userId) === true) {
-                UserService.decreasePoints(userId, process.env.COST_TO_UNLOCK_A_GEM);
+                UserService.decreasePoints(userId, parseInt(process.env.COST_TO_UNLOCK_A_GEM));
             }
             res.json({ message: "Unlocked post" });
         } catch (error) {
