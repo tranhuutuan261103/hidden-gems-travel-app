@@ -2,6 +2,7 @@ const PostService = require("../services/PostService.js");
 const UserService = require("../services/UserService.js");
 const StorageService = require("../services/StorageService.js");
 const Dinov2Service = require("../services/Dinov2Service.js");
+const HaversineHelper = require("../utils/HaversineHelper.js");
 
 module.exports = {
     createPost: async (req, res) => {
@@ -159,7 +160,7 @@ module.exports = {
                 res.json({ message: "Post not found" });
                 return;
             }
-            if (UserService.getPoints(userId) < process.env.COST_TO_UNLOCK_A_GEM) {
+            if (await UserService.getPoints(userId) < parseInt(process.env.COST_TO_UNLOCK_A_GEM)) {
                 res.json({ message: "Not enough points" });
                 return;
             }
@@ -176,11 +177,23 @@ module.exports = {
         try {
             const { id } = req.params;
             const userId = req.user._id;
+            const { longitude, latitude } = req.body;
+            if (longitude === undefined || latitude === undefined) {
+                res.json({ message: "Longitude and latitude are required" });
+                return;
+            }
             const post = await PostService.getOne(id);
             if (!post) {
                 res.json({ message: "Post not found" });
                 return;
             }
+
+            const distance = await HaversineHelper.coordinatesToDistance(post.latitude, post.longitude, latitude, longitude);
+            if (distance > parseInt(process.env.MAX_DISTANCE_TO_ARRIVE)) {
+                res.json({ message: "Too far" });
+                return;
+            }
+
             const userInfo = await UserService.getUserInfo(userId);
             if (!userInfo.postsFound.includes(id)) {
                 res.json({ message: "You have not found this post" });
