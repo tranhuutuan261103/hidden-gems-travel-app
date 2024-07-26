@@ -25,13 +25,26 @@ module.exports = {
 
     getAllComments: async (postId) => {
         try {
-            const comments = await Comment.find().where('postId').equals(postId);
+            const comments = await Comment.find().where('postId').equals(postId)
+                .populate('createdBy')
+                .select('-postId')
+                .sort({ createdAt: -1 });
+            
             let stars = 0;
             comments.forEach(comment => {
                 stars += comment.star;
             });
-            const star_average = stars / comments.length;
-            return { comments, star_average };
+            
+            const star_average = comments.length ? stars / comments.length : 0;
+    
+            // Transform comments to remove sensitive data from createdBy
+            const sanitizedComments = comments.map(comment => {
+                const { createdBy, ...restComment } = comment.toObject();
+                const { email, password, hashedPassword, postsFound, postsArrived, postsUnlocked, role, points, __v, ...restCreatedBy } = createdBy;
+                return { ...restComment, createdBy: restCreatedBy };
+            });
+    
+            return { comments: sanitizedComments, star_average };
         } catch (error) {
             throw new Error(error);
         }
