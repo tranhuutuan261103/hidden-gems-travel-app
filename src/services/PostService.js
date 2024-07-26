@@ -40,7 +40,7 @@ module.exports = {
     //     }
     // },
 
-    getAll: async (longitude, latitude, maxDistance, categoryId, limit = 10) => {
+    getAll: async (longitude, latitude, maxDistance, categoryId, limit) => {
         try {
             let posts = categoryId ?
                 await Post.find().populate('category')
@@ -60,7 +60,10 @@ module.exports = {
 
             result.sort((a, b) => a.distance - b.distance);
 
-            return result.slice(0, limit);
+            if (limit) {
+                result = result.slice(0, limit);
+            }
+            return result;
         } catch (error) {
             throw new Error(error);
         }
