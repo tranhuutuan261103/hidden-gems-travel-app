@@ -1,7 +1,7 @@
 module.exports = {
     upload: async (postId, urls) => {
         const data_body = {
-            "id": JSON.stringify(postId),
+            "id": postId.toString(),
             "urls": urls
         };
         console.log(data_body);
