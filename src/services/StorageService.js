@@ -19,6 +19,11 @@ module.exports = {
             // get the buffer of the file from file path
             const buffer = fs.readFileSync(file.path);
 
+            if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
+                await uploadBytes(storageRef, buffer, { contentType: 'image/png' });
+                return getDownloadURL(storageRef);
+            }
+
             await uploadBytes(storageRef, buffer, { contentType: file.mimetype });
             return getDownloadURL(storageRef);
         } catch (error) {
