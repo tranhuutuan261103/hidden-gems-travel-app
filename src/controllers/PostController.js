@@ -167,7 +167,7 @@ module.exports = {
                 return;
             }
             if (await UserService.unlockPost(id, userId) === true) {
-                UserService.decreasePoints(userId, process.env.COST_TO_UNLOCK_A_GEM);
+                UserService.decreasePoints(userId, parseInt(process.env.COST_TO_UNLOCK_A_GEM));
             }
             res.json({ message: "Unlocked post" });
         } catch (error) {
