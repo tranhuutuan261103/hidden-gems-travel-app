@@ -50,6 +50,15 @@ module.exports = {
 
     getAllPost: async (req, res) => {
         try {
+            if (!req.file) {
+                res.json({ message: "Image is required" });
+                return;
+            }
+            const imageUrl = await StorageService.upload(req.file, "ImagesForSearch", " image for search");
+            // const imageUrl = "https://firebasestorage.googleapis.com/v0/b/hidden-gems-travel-cf03e.appspot.com/o/ImagesForSearch%2F2024-07-26T16%3A25%3A25.279Z%20image%20for%20search?alt=media&token=1baa7a53-15ba-4534-abc5-9a29e9b0d217";
+            console.log("Upload image successful: " + imageUrl);
+            const image_retrive = await Dinov2Service.retrieve(imageUrl);
+
             const { longitude, latitude, maxDistance, categoryId, limit } = req.query;
             const userId = req.user._id;
             const posts = await PostService.getAll(longitude, latitude, maxDistance, categoryId, limit);
@@ -72,7 +81,20 @@ module.exports = {
                     result[result.length - 1].isArrived = false;
                 }
             }
-            res.json(result);
+
+            // Create a mapping from arr1 to index positions
+            const orderMapping = {};
+            image_retrive.matches.forEach((id, index) => {
+                orderMapping[id] = index;
+                console.log(id);
+            });
+
+            // Sort arr2 based on the order in arr1
+            const sortedResult = result.sort((a, b) => {
+                return orderMapping[a.id] - orderMapping[b.id];
+            });
+
+            res.json(sortedResult);
         } catch (error) {
             res.json({ message: error.message });
         }
