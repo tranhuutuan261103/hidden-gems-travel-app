@@ -94,7 +94,8 @@ module.exports = {
 
     getLeaderboard: async (req, res) => {
         try {
-            const users = await UserService.getLeaderboard();
+            const { limit } = req.query;
+            const users = await UserService.getLeaderboard(limit);
             res.json(users);
         } catch (error) {
             res.json({ message: error.message });

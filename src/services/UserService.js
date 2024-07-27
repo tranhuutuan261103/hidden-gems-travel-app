@@ -160,12 +160,12 @@ module.exports = {
                 });
             }
             return users.map(user => {
-                    return {
-                        _id: user._id,
-                        name: user.name,
-                        points: user.points,
-                    };
-                });
+                return {
+                    _id: user._id,
+                    name: user.name,
+                    points: user.points,
+                };
+            });
         } catch (error) {
             throw new Error(error);
         }
