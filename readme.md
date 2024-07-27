@@ -4,6 +4,11 @@ Setup is super easy. Clone the repository
 
 ```shell script
 git clone https://github.com/tranhuutuan261103/hidden-gems-travel-api.git
+```
+
+Install packages for Backend repository
+
+```shell script
 cd hidden-gems-travel-app
 cd Backend
 npm install
