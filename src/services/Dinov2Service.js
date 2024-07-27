@@ -46,7 +46,7 @@ module.exports = {
 
     retrieve: async (imageUrl) => {
         const data_body = {
-            "url": imageUrl,
+            "img_url": imageUrl,
             "type": "image"
         };
         const response = await fetch(`${process.env.DINOV2HELPER_URL}/retrieve/`, {

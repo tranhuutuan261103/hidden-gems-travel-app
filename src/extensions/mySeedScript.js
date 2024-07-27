@@ -53,7 +53,7 @@ async function seedDB() {
         await client.connect();
         console.log("Connected correctly to server");
         client.on('commandStarted', started => console.log(started));
-        const db = client.db("test2");
+        const db = client.db("test3");
 
         // Transform data before inserting
         const transformedUsers = transformData(users);
