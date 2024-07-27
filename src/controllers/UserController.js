@@ -90,5 +90,14 @@ module.exports = {
         } catch (error) {
             res.json({ message: error.message });
         }
+    },
+
+    getLeaderboard: async (req, res) => {
+        try {
+            const users = await UserService.getLeaderboard();
+            res.json(users);
+        } catch (error) {
+            res.json({ message: error.message });
+        }
     }
 };

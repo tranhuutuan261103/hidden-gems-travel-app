@@ -146,4 +146,28 @@ module.exports = {
             throw new Error(error);
         }
     },
+
+    getLeaderboard: async (limit) => {
+        try {
+            const users = await User.find().sort({ points: -1 });
+            if (limit) {
+                return users.slice(0, limit).map(user => {
+                    return {
+                        _id: user._id,
+                        name: user.name,
+                        points: user.points,
+                    };
+                });
+            }
+            return users.map(user => {
+                    return {
+                        _id: user._id,
+                        name: user.name,
+                        points: user.points,
+                    };
+                });
+        } catch (error) {
+            throw new Error(error);
+        }
+    },
 };

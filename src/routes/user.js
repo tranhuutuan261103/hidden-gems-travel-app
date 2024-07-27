@@ -11,5 +11,6 @@ router.get('/users/info', authMiddleware.Validate, User.getUserInfo);
 router.get('/users/infoDetail', authMiddleware.Validate, User.getUserInfoDetail);
 router.post('/users/logout', authMiddleware.Validate, User.logoutUser);
 router.post('/users/points/increase', authMiddleware.Validate, User.increasePoints);
+router.get('/users/leaderboard', User.getLeaderboard);
 
 module.exports = router;

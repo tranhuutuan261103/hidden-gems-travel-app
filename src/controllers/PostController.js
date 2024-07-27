@@ -126,7 +126,9 @@ module.exports = {
 
             // Sort arr2 based on the order in arr1
             const sortedResult = result.sort((a, b) => {
-                return orderMapping[a.id] - orderMapping[b.id];
+                const aIndex = orderMapping.hasOwnProperty(a._id) ? orderMapping[a._id.toString()] : Infinity;
+                const bIndex = orderMapping.hasOwnProperty(b._id) ? orderMapping[b._id.toString()] : Infinity;
+                return aIndex - bIndex;
             });
 
             res.json(sortedResult);
