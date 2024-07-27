@@ -107,6 +107,28 @@ module.exports = {
                 }
             }
 
+            if (req.query.keywords) {
+                console.log(req.query.keywords);
+                const text_retrive = await Dinov2Service.retrieveByText(req.query.keywords);
+
+                // Create a mapping from arr1 to index positions
+                const orderMappingForImage = {};
+                text_retrive.matches.forEach((id, index) => {
+                    orderMappingForImage[id] = index;
+                    console.log(id);
+                });
+
+                // Sort arr2 based on the order in arr1
+                const sortedResult = result.sort((a, b) => {
+                    const aIndex = orderMappingForImage.hasOwnProperty(a._id) ? orderMappingForImage[a._id.toString()] : Infinity;
+                    const bIndex = orderMappingForImage.hasOwnProperty(b._id) ? orderMappingForImage[b._id.toString()] : Infinity;
+                    return aIndex - bIndex;
+                });
+
+                res.json(sortedResult);
+                return;
+            }
+
             if (!req.file) {
                 res.json(result);
                 return;

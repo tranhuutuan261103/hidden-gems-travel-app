@@ -63,5 +63,26 @@ module.exports = {
             console.log("Retrieve image failed: " + data.message);
             throw new Error(data.message);
         }
-    }
+    },
+
+    retrieveByText: async (text) => {
+        const data_body = {
+            "text": text,
+            "type": "text"
+        };
+        const response = await fetch(`${process.env.DINOV2HELPER_URL}/retrieve/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data_body),
+        });
+        const data = await response.json();
+        if (response.ok) {
+            return data;
+        } else {
+            console.log("Retrieve image failed: " + data.message);
+            throw new Error(data.message);
+        }
+    },
 };
