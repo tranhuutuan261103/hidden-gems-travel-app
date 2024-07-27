@@ -70,7 +70,7 @@ async function seedDB() {
         const collection_posts = db.collection("posts");
         for (let post of transformedPosts) {
             try {
-                await Dinov2Service.upload(post._id, post.images);
+                await Dinov2Service.uploadImages(post._id, post.images);
                 console.log("Uploaded images for post", post._id, post.images, "successfully!");
                 await collection_posts.insertOne(post);
             } catch (err) {
