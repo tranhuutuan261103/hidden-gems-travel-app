@@ -1,6 +1,6 @@
 # Hidden gems travel app
 
-## Installation
+## Clone project
 
 Setup is super easy. Clone the repository
 
