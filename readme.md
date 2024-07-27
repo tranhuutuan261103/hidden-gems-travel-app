@@ -1,3 +1,5 @@
+# Hidden gems travel app
+
 ## Installation
 
 Setup is super easy. Clone the repository
@@ -14,8 +16,7 @@ cd Backend
 npm install
 ```
 
-Create an ``.env`` file at the root of your project with the following.  
-
+Create an ``.env`` file at the root of hidden-gems-travel-app/Backend
 
 ```dotenv
 DATABASE_URL = YOUR_MONGO_DB_URL
