@@ -25,7 +25,7 @@ GEMINI_KEY = YOUR_GEMINI_KEY
 Run project
 
 ```shell script
-run app.py
+python app.py
 ```
 
 ## Run backend
