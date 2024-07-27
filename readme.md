@@ -49,8 +49,14 @@ MAX_DISTANCE_TO_ARRIVE = 5
 SEED_DATA = false // set true if first run to seed data
 ```
 
+## Run frontend
+
+```shell script
+cd Frontend
+```
+
 Run project
 
 ```shell script
-npm start
+flutter run lib/main.dart
 ```
