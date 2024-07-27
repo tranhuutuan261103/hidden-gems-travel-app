@@ -8,6 +8,25 @@ Setup is super easy. Clone the repository
 git clone https://github.com/tranhuutuan261103/hidden-gems-travel-api.git
 ```
 
+## Run AI Server
+
+```shell script
+cd AI Server
+npm install
+```
+
+Create an ``.env`` file at the root of hidden-gems-travel-app/Backend
+
+```dotenv
+GEMINI_KEY = YOUR_GEMINI_KEY
+```
+
+Run project
+
+```shell script
+run app.py
+```
+
 ## Run backend
 
 ```shell script
