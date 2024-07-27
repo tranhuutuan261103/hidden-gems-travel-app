@@ -18,6 +18,7 @@ JWT_SECRET = hidden-gems-travel
 COST_TO_UNLOCK_A_GEM = 1000
 POINTS_FOR_CREATING_A_GEM = 1000
 MAX_DISTANCE_TO_ARRIVE = 5
+SEED_DATA = false
 ```
 
 Run project

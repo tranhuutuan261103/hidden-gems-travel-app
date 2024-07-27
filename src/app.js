@@ -7,6 +7,7 @@ const commentRoutes = require('./routes/comment.js');
 const tourRoutes = require('./routes/tour.js');
 const categoryRoutes = require('./routes/category.js');
 const userRoutes = require('./routes/user.js');
+const seedDB = require('./extensions/mySeedScript.js');
 const mongoString = process.env.DATABASE_URL;
 
 mongoose.connect(mongoString);
@@ -16,8 +17,12 @@ database.on('error', (error) => {
     console.log(error);
 })
 
-database.once('connected', () => {
+database.once('connected', async () => {
     console.log('Database Connected');
+    if (process.env.SEED_DATA === 'true') {
+        await seedDB();
+        console.log('Database Seeded');
+    }
 })
 const app = express();
 
