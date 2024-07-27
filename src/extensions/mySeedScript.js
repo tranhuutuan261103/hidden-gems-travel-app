@@ -1,5 +1,7 @@
 const { MongoClient, ObjectId } = require("mongodb");
 
+const Dinov2Service = require("../services/Dinov2Service");
+
 const users = require("../extensions/users.json");
 const categories = require("../extensions/categories.json");
 const posts = require("../extensions/posts.json");
@@ -21,10 +23,19 @@ function transformData(data) {
             entry.star = parseInt(entry.star.$numberInt);
         }
         if (entry.createdAt && entry.createdAt.$date && entry.createdAt.$date.$numberLong) {
-            entry.createdAt = new Date(parseInt(entry.createdAt.$date.$numberLong));
+            entry.createdAt = new Date(parseInt(entry.createdAt.$date.$numberLong, 10));
         }
         if (entry.__v && entry.__v.$numberInt) {
-            entry.__v = parseInt(entry.__v.$numberInt);
+            entry.__v = parseInt(entry.__v.$numberInt, 10);
+        }
+        if (entry.longitude && entry.longitude.$numberDouble) {
+            entry.longitude = parseFloat(entry.longitude.$numberDouble);
+        }
+        if (entry.latitude && entry.latitude.$numberDouble) {
+            entry.latitude = parseFloat(entry.latitude.$numberDouble);
+        }
+        if (entry.star_average && entry.star_average.$numberInt) {
+            entry.star_average = parseInt(entry.star_average.$numberInt, 10);
         }
         return entry;
     });
@@ -42,7 +53,7 @@ async function seedDB() {
         await client.connect();
         console.log("Connected correctly to server");
         client.on('commandStarted', started => console.log(started));
-        const db = client.db("test");
+        const db = client.db("test2");
 
         // Transform data before inserting
         const transformedUsers = transformData(users);
@@ -57,7 +68,15 @@ async function seedDB() {
         await collection_categories.insertMany(transformedCategories);
 
         const collection_posts = db.collection("posts");
-        await collection_posts.insertMany(transformedPosts);
+        for (let post of transformedPosts) {
+            try {
+                await Dinov2Service.upload(post._id, post.images);
+                console.log("Uploaded images for post", post._id, post.images, "successfully!");
+                await collection_posts.insertOne(post);
+            } catch (err) {
+                console.log(err.stack);
+            }
+        }
 
         const collection_comments = db.collection("comments");
         await collection_comments.insertMany(transformedComments);
