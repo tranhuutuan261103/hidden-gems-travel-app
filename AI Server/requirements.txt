@@ -1,0 +1,11 @@
+numpy<2
+pydantic
+requests
+Pillow
+docarray
+fastapi
+torch==2.0.1
+transformers
+uvicorn
+hnswlib
+docarray[hnswlib]
