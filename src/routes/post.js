@@ -7,6 +7,7 @@ const router = express.Router()
 const upload = multer({ dest: 'uploads/' })
 
 router.get('/posts', AuthMiddleware.Validate, upload.single('image'), Post.getAllPost);
+router.get('/posts/voting_desc', AuthMiddleware.Validate, Post.getAllPostByVoting);
 router.get('/posts/found', AuthMiddleware.Validate, Post.getAllPostFound);
 router.post('/posts/:id/unlocked', AuthMiddleware.Validate, Post.unlockPost);
 router.get('/posts/unlocked', AuthMiddleware.Validate, Post.getUnlockPost);
