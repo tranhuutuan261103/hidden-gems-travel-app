@@ -28,6 +28,8 @@ Run project
 python app.py
 ```
 
+Deploy to ngrok
+
 ## Run backend
 
 ```shell script
@@ -39,7 +41,7 @@ Create an ``.env`` file at the root of hidden-gems-travel-app/Backend
 
 ```dotenv
 DATABASE_URL = YOUR_MONGO_DB_URL
-DINOV2HELPER_URL = https://7d5d-2001-ee0-1a1-7430-296c-f657-e46e-9855.ngrok-free.app
+DINOV2HELPER_URL = URL_OF_AI_SERVER_WHEN_DEPLOY_TO_NGROK
 JWT_SECRET = hidden-gems-travel
 COST_TO_UNLOCK_A_GEM = 1000
 POINTS_FOR_CREATING_A_GEM = 1000
