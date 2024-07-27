@@ -9,6 +9,7 @@ const upload = multer({ dest: 'uploads/' })
 router.get('/posts', AuthMiddleware.Validate, upload.single('image'), Post.getAllPost);
 router.get('/posts/voting_desc', AuthMiddleware.Validate, Post.getAllPostByVoting);
 router.get('/posts/found', AuthMiddleware.Validate, Post.getAllPostFound);
+// router.get('posts/me', AuthMiddleware.Validate, Post.getMyPosts);
 router.post('/posts/:id/unlocked', AuthMiddleware.Validate, Post.unlockPost);
 router.get('/posts/unlocked', AuthMiddleware.Validate, Post.getUnlockPost);
 router.post('/posts/:id/arrived', AuthMiddleware.Validate, Post.markArrived);

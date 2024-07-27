@@ -40,7 +40,8 @@ module.exports = {
 
             await UserService.increasePoints(userId, parseInt(process.env.POINTS_FOR_CREATING_A_GEM));
 
-            console.log(await Dinov2Service.upload(post._id, imageUrls));
+            console.log("Upload image successful: " + imageUrls);
+            await Dinov2Service.uploadImages(post._id, imageUrls);
 
             res.json(result);
         } catch (error) {
@@ -133,6 +134,12 @@ module.exports = {
             res.json({ message: error.message });
         }
     },
+
+    // getMyPosts: async (req, res) => {
+    //     const userId = req.user._id;
+    //     const { limit } = req.query;
+    //     const posts = await PostService.getMyPosts(limit);
+    // },
 
     getAllPostFound: async (req, res) => {
         try {
