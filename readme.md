@@ -11,7 +11,6 @@ git clone https://github.com/tranhuutuan261103/hidden-gems-travel-api.git
 ## Run backend
 
 ```shell script
-cd hidden-gems-travel-app
 cd Backend
 npm install
 ```
