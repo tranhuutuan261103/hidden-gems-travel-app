@@ -12,10 +12,11 @@ git clone https://github.com/tranhuutuan261103/hidden-gems-travel-api.git
 
 ```shell script
 cd AI Server
-npm install
 ```
 
-Create an ``.env`` file at the root of hidden-gems-travel-app/Backend
+Create .venv in "hidden-gems-travel-app/AI Server" and install packages follow requirements.txt
+
+Create an ``.env`` file at the root of "hidden-gems-travel-app/AI Server"
 
 ```dotenv
 GEMINI_KEY = YOUR_GEMINI_KEY
