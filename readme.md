@@ -8,7 +8,7 @@ Setup is super easy. Clone the repository
 git clone https://github.com/tranhuutuan261103/hidden-gems-travel-api.git
 ```
 
-Install packages for Backend repository
+## Run backend
 
 ```shell script
 cd hidden-gems-travel-app
