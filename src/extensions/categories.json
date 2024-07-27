@@ -1,0 +1,7 @@
+[
+    {"_id":{"$oid":"66978c7ac9280eedfada88d8"},"name":"Phong cảnh","icon":"travel_explore","__v":{"$numberInt":"0"}},
+    {"_id":{"$oid":"66978d21c9280eedfada88da"},"name":"Khách sạn","icon":"hotel","__v":{"$numberInt":"0"}},
+    {"_id":{"$oid":"66978d48c9280eedfada88dc"},"name":"Ăn uống","icon":"local_dining","__v":{"$numberInt":"0"}},
+    {"_id":{"$oid":"66978d5dc9280eedfada88de"},"name":"Di chuyển","icon":"train_outlined","__v":{"$numberInt":"0"}},
+    {"_id":{"$oid":"66978d71c9280eedfada88e0"},"name":"Bãi biển","icon":"beach_access_rounded","__v":{"$numberInt":"0"}}
+]
