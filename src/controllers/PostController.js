@@ -48,6 +48,39 @@ module.exports = {
         }
     },
 
+    getAllPostByVoting: async (req, res) => {
+        try {
+            const { longitude, latitude, maxDistance, categoryId, limit } = req.query;
+            const userId = req.user._id;
+            const posts = await PostService.getAll(longitude, latitude, maxDistance, categoryId, limit);
+            await UserService.updatePostsFound(userId, posts.map(post => post._id));
+
+            const userInfo = await UserService.getUserInfo(userId);
+            const postsUnlocked = userInfo.postsUnlocked;
+            const postsArrived = userInfo.postsArrived;
+            let result = [];
+            for (let post of posts) {
+                if (postsUnlocked.includes(post._id)) {
+                    result.push({ ...post, isUnlocked: true });
+                } else {
+                    result.push({ ...post, isUnlocked: false });
+                }
+
+                if (postsArrived.includes(post._id)) {
+                    result[result.length - 1].isArrived = true;
+                } else {
+                    result[result.length - 1].isArrived = false;
+                }
+            }
+
+            result.sort((a, b) => b.star_average - a.star_average);
+
+            res.json(result);
+        } catch (error) {
+            res.json({ message: error.message });
+        }
+    },
+
     getAllPost: async (req, res) => {
         try {
             const { longitude, latitude, maxDistance, categoryId, limit } = req.query;
